@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <link rel="stylesheet" href="../smarter_everyday_frontend/stylesheets/style.css">
+    <script src="../smarter_everyday_frontend/src/semantic.js"></script>
+    <script src=".//src/api.js" defer></script>
+    <script src=".//src/renderdata.js" defer></script>
+    <title>Smarter Everyday</title>
+</head>
+
+<body>
+    <div class="ui bottom attached segment pushable">
+        <div class="ui visible  left vertical sidebar menu">
+            <div class="item">
+                <h1>Smarter Everyday!</h1>
+            </div>
+            <div class="ui form">
+                <div class="field">
+                    <label>Select Difficulty:</label>
+                    <div class="ui selection dropdown">
+                        <input type="hidden" name="Difficulty">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Difficulty</div>
+                        <div class="menu">
+                            <div class="item" value="easy">Easy</div>
+                            <div class="item" value="medium">Medium</div>
+                            <div class="item" value="hard">Hard</div>
+                        </div>
+                    </div>
+                    <label>Select Category:</label>
+                    <div class="ui selection dropdown">
+                        <input type="hidden" name="Category">
+                        <i class="dropdown icon"></i>
+                        <div class="default text">Category</div>
+                        <div class="menu" id="category_menu">
+                        </div>
+                    </div><br>
+                    <label for="trivia_amount">Number of Questions:</label>
+                    <input type="number" name="trivia_amount" id="trivia_amount" class="form-control" min="1" max="50"
+                        value="10">
+                </div>
+            </div>
+        </div>
+        <div class="pusher">
+            <!-- <div class="main-container"> -->
+                <p id="question"></p>
+
+                <div class="buttons">
+                    <button id="btn0"><span id="choice0"></span></button>
+                    <button id="btn1"><span id="choice1"></span></button>
+                    <button id="btn2"><span id="choice2"></span></button>
+                    <button id="btn3"><span id="choice3"></span></button>
+                </div>
+            </div>
+        <!-- </div> -->
+    </div>
+
+    <script>
+        $('.ui.dropdown').dropdown();
+        $('select.dropdown')
+            .dropdown();
+    </script>
+</body>
+
+</html>
