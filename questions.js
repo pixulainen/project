@@ -4,7 +4,7 @@ const questionEl = document.getElementById('question');
 const choices = Array.from(document.getElementsByClassName('choice-text'));
 // console.log(choices)
 
-const TEST_API = 'https://opentdb.com/api.php?amount=10&category=15&difficulty=medium&type=multiple'
+const TEST_API = 'https://opentdb.com/api.php?amount=10'
 
 
 let currentQuestion = {};
@@ -15,24 +15,35 @@ let availableQuestions = [];
 
 const API_Questions = {
     getQuestions: () => fetch(TEST_API)
-    .then(response => response.json()).then(question => console.log(question.results))
+    .then(response => response.json())
 }
-
-API_Questions.getQuestions()
-.then(questions => renderQuestions(questions))
-
-const renderQuestions = questions => {
-    questions.forEach(question => {
-        getNewQuestion(question)
-    });
-
-};
 
 let questions = [];
 
+API_Questions.getQuestions()
+.then(loadedQuestions => {
+    console.log(loadedQuestions.results)
+    questions = loadedQuestions.results.map(loadedQuestion => {
+        const formattedQuestion = { 
+            question: loadedQuestion.question
+        };
+        
+        const answerChoices = [...loadedQuestion.incorrect_answers];
+        formattedQuestion.answer = Math.floor(Math.random() * 3 ) + 1;
+        answerChoices.splice(formattedQuestion.answer - 1, 0, loadedQuestion.correct_answer);
+
+        answerChoices.forEach((choice, index) => {
+            formattedQuestion['choice' + (index + 1)] = choice;
+        })
+        // console.log(formattedQuestion)
+        return formattedQuestion
+    })
+    startGame();
+})
+
+
 startGame = () => {
     questionCounter = 0;
-    score = 0;
     availableQuestions = [...questions];
     getNewQuestion();
 }
@@ -42,7 +53,8 @@ getNewQuestion = () => {
     questionCounter++;
     const questionIndex = Math.floor(Math.random() * availableQuestions.length);
     currentQuestion = availableQuestions[questionIndex];
-    questionEl.innerText = currentQuestion.question;
+    questionEl.innerText = decodeURI(currentQuestion.question)
+
 
     choices.forEach(choice => {
         const number = choice.dataset['number'];
@@ -56,7 +68,6 @@ getNewQuestion = () => {
 choices.forEach(choice => {
     choice.addEventListener('click', event => {
         if (!acceptingAnswer) return;
-
 
         acceptingAnswer = false; 
         const selectedChoice = event.target;
@@ -81,4 +92,3 @@ choices.forEach(choice => {
     });
 })
 
-startGame();
